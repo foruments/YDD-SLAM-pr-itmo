@@ -123,7 +123,7 @@ python src/evaluation/evaluate_ate.py \
   --verbose
 ```
 
-### Тест на собственных данных (iPhone)
+### Тест на собственных данных
 
 1. **Запись данных:**
    - Использовать приложение **Stray Scanner** на iPhone 16 Pro
