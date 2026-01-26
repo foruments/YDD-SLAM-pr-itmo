@@ -106,12 +106,9 @@ python src/data_preparation/associate.py \
 
 3. **Запуск SLAM:**
 ```bash
-cd src/yolo_orb_slam3
-./Examples/RGB-D/rgbd_tum \
-  Vocabulary/ORBvoc.txt \
-  ../../configs/TUM3.yaml \
-  ~/rgbd_dataset_freiburg3_walking_xyz \
-  ../../associations.txt
+cd ~/YOLO_ORB_SLAM3
+./Examples/RGB-D/rgbd_tum Vocabulary/ORBvoc.txt Examples/RGB-D/TUM3.yaml
+~/rgbd_dataset_freiburg3_walking_xyz Examples/RGB-D/associations/fr3_walking_xyz.txt
 ```
 
 4. **Оценка траектории:**
