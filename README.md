@@ -181,7 +181,7 @@ python src/evaluation/evaluate_ate.py \
 
 **Примеры работы:**
 
-![TUM траектория](results/tum_fr3_walking_xyz/ate_plot.pdf)
+![TUM траектория](results/tum_fr3_walking_xyz/ate_plot.png)
 ![iPhone 3D карта](docs/screenshots/fig7_3d_map.png)
 ![Сравнение траекторий iPhone](results/iphone_data/trajectory_comparison.png)
 
