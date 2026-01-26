@@ -38,7 +38,7 @@
 
 ### 1. Клонирование репозитория
 ```bash
-git clone https://github.com/[твой-username]/YDD-SLAM-Reproduction.git
+git clone https://github.com/foruments/YDD-SLAM-pr-itmo
 cd YDD-SLAM-Reproduction
 ```
 
