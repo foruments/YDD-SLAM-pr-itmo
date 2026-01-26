@@ -16,7 +16,6 @@ if not dataset_folder:
 
 print(f"Выбрана папка: {dataset_folder}")
 
-# Подпапки
 depth_folder = os.path.join(dataset_folder, "depth")
 rgb_video = os.path.join(dataset_folder, "rgb.mp4")
 
@@ -30,7 +29,6 @@ os.makedirs(depth_dir, exist_ok=True)
 
 print(f"Создаю TUM-датасет в: {output_dir}")
 
-# Ищем camera_matrix.csv
 camera_matrix_path = None
 for file in os.listdir(dataset_folder):
     if file.startswith("camera_matrix") and file.endswith(".csv"):
@@ -43,7 +41,6 @@ if not camera_matrix_path:
 
 print(f"Найден файл калибровки: {camera_matrix_path}")
 
-# Читаем camera_matrix.csv
 with open(camera_matrix_path, "r") as f:
     lines = f.readlines()
 
@@ -63,22 +60,18 @@ fy = matrix[1][1]
 cx = matrix[0][2]
 cy = matrix[1][2]
 
-# Разрешение из depth PNG
 example_depth = os.path.join(depth_folder, sorted(os.listdir(depth_folder))[0])
 img_depth = Image.open(example_depth)
 width, height = img_depth.size
 
-print("\n=== Калибровочные параметры камеры (для yaml файла) ===")
+print("\n=== Калибровочные параметры камеры ===")
 print(f"Width: {width}")
 print(f"Height: {height}")
 print(f"fx: {fx:.6f}")
 print(f"fy: {fy:.6f}")
 print(f"cx: {cx:.6f}")
 print(f"cy: {cy:.6f}")
-print("DepthMapFactor: 1000.0 — попробуй 1.0 если depth чёрные")
-print("==========================================\n")
 
-# Извлекаем RGB кадры из rgb.mp4 с помощью OpenCV
 print("Извлекаю RGB кадры из rgb.mp4 с помощью OpenCV...")
 cap = cv2.VideoCapture(rgb_video)
 if not cap.isOpened():
@@ -98,7 +91,6 @@ while True:
 cap.release()
 print(f"Извлечено {frame_count} RGB кадров")
 
-# Сортируем
 rgb_files = sorted([f for f in os.listdir(rgb_dir) if f.lower().endswith('.png')])
 depth_files = sorted([f for f in os.listdir(depth_folder) if f.lower().endswith('.png')])
 
@@ -115,18 +107,15 @@ for i in range(min_frames):
 
     timestamp = i * 0.033333  # 30 FPS
 
-    # Переименовываем RGB
     rgb_src = os.path.join(rgb_dir, rgb_file)
     rgb_dst = os.path.join(rgb_dir, f"{timestamp:.6f}.png")
     os.rename(rgb_src, rgb_dst)
 
-    # Копируем depth
     depth_src = os.path.join(depth_folder, depth_file)
     depth_dst = os.path.join(depth_dir, f"{timestamp:.6f}.png")
     img_depth = Image.open(depth_src)
     img_depth.save(depth_dst)
 
-    # txt
     rgb_line = f"{timestamp:.6f} rgb/{timestamp:.6f}.png"
     depth_line = f"{timestamp:.6f} depth/{timestamp:.6f}.png"
     assoc_line = f"{timestamp:.6f} rgb/{timestamp:.6f}.png {timestamp:.6f} depth/{timestamp:.6f}.png"
@@ -135,7 +124,6 @@ for i in range(min_frames):
     depth_txt.append(depth_line)
     associations.append(assoc_line)
 
-# Сохраняем txt
 with open(os.path.join(output_dir, "rgb.txt"), "w") as f:
     f.write("# RGB images\n")
     f.write("\n".join(rgb_txt))
@@ -149,4 +137,3 @@ with open(os.path.join(output_dir, "associations.txt"), "w") as f:
 
 print(f"\nГотово! {len(rgb_txt)} кадров обработано.")
 print(f"TUM-датасет создан в: {output_dir}")
-print("Теперь запускай YOLO_ORB_SLAM3 на tum_dataset")
